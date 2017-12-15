@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "#\n# Script for phase estimation.\n#\n\ninstall.packages(\"haplo.stats\")\nlibrary(haplo.stats)\nrm(list=ls())\n\nload(file=url(\"http://www-eio.upc.es/~jan/data/bsg/CHBChr2-2000.rda\"))\nls()\n\nX[1:10,1:10]\nZ <- t(X)\ndim(Z)\nnmis <- function(x) {\n  y <- sum(is.na(x))\n  return(y)\n}\n\nnmissings <- apply(Z,2,nmis)\nnmissings\n\nZ <- Z[,nmissings==0]\ndim(Z)\n\nntypes <- function(x) {\n  y <- length(table(x))\n  return(y)\n}\n\nlength(table(Z[,1]))\n\nZ[1:10,1:10]\n\nFirstFive <- Z[,1:5]\nFirstFive\nnrow(FirstFive)\n\nGeno <- cbind(substr(FirstFive[,1],1,1),substr(FirstFive[,1],2,2),\n              substr(FirstFive[,2],1,1),substr(FirstFive[,2],2,2),\n              substr(FirstFive[,3],1,1),substr(FirstFive[,3],2,2),\n              substr(FirstFive[,4],1,1),substr(FirstFive[,4],2,2),\n              substr(FirstFive[,5],1,1),substr(FirstFive[,5],2,2))\n\nGeno\n\nSnpnames <- paste(\"SNP\",1:5,sep=\"\")\nSnpnames\nHaplo.Res <- haplo.em(Geno,locus.label=Snpnames,control=haplo.em.control(min.posterior=1e-4))\nHaplo.Res\n\nnHaploPossible <- 2^5\nnHaploPossible\n\nHaplo.Res$nreps\nHaplo.Res$indx.subj[1:10]\nHaplo.Res$hap1code[1:10]\nHaplo.Res$hap2code[1:10]\nhprob <- Haplo.Res$hap.prob\nhprob\n\nHaplo.Res$post\n\n\nFirst25 <- Z[,1:25]\nFirst25\nnrow(First25)\n\nGeno <- cbind(substr(First25[,1],1,1),substr(First25[,1],2,2))\n\nfor(i in 2:25) {\n  Geno <- cbind(Geno,substr(First25[,i],1,1),substr(First25[,i],2,2))\n}\n             \nGeno\n\nSnpnames <- paste(\"SNP\",1:25,sep=\"\")\nSnpnames\nHaplo.Res <- haplo.em(Geno,locus.label=Snpnames,control=haplo.em.control(min.posterior=1e-4))\nHaplo.Res\n\nnHaploPossible <- 2^25\nnHaploPossible\n\nHaplo.Res$nreps\nHaplo.Res$indx.subj[1:10]\nHaplo.Res$hap1code[1:10]\nHaplo.Res$hap2code[1:10]\nhprob <- Haplo.Res$hap.prob\nhprob\n\nHaplo.Res$post\n\n",
+    "created" : 1513348291500.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "946834110",
+    "id" : "500C9EE3",
+    "lastKnownWriteTime" : 1512137739,
+    "last_content_update" : 1512137739,
+    "path" : "C:/Users/Vincenzo/Desktop/FIB/BSG/SG/Lecture4/Script04.R",
+    "project_path" : null,
+    "properties" : {
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

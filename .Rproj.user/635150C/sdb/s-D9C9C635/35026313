@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "library(haplo.stats)\n\nload(\"MB.rda\")\n\n#2\nindiv = nrow(Y)\nsnps = ncol(Y)\nperc = (100 * length(which(is.na(Y))))/length(Y)\n\n#3\nnPossibleHaplotypes = 2 ^ snps\n\n#4\nGeno = cbind(substr(Y[,1],1,1),substr(Y[,1],2,2))\n\nfor (i in 2:snps) {\n  Geno = cbind(Geno, substr(Y[,i],1,1) ,substr(Y[,i],2,2))\n}\n\nSnpnames <- paste(\"SNP\",1:snps,sep=\"\")\nSnpnames\nHaploRes <- haplo.em(Geno,locus.label=Snpnames,control=haplo.em.control(min.posterior=1e-3))\nHaploRes\n\nnHaplo = nrow(HaploRes$haplotype)\nhaploList = HaploRes$haplotype\nindexMax = which(HaploRes$hap.prob == max(HaploRes$hap.prob))\nmostCommonHaplotype = HaploRes$haplotype[indexMax,]\n\n\n#5\nnames(table(Y[4,]))[2]\nsubstr(names(table(Y[4,]))[2],1,1) != substr(names(table(Y[4,]))[2],2,2)\n\nlistIds=c()\nfor(i in 1:nrow(Y)) {\n  cont=0\n  for(j in 1:length(table(Y[i,]))) {\n    if(substr(names(table(Y[i,]))[j],1,1) != substr(names(table(Y[i,]))[j],2,2)) {\n      cont=cont+table(Y[i,])[names(table(Y[i,]))[j]]\n    }\n  }\n  if(cont>1) {\n    listIds[length(listIds)+1]=i;\n  }\n}\nlistIds\n",
+    "created" : 1513348238752.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3673075090",
+    "id" : "35026313",
+    "lastKnownWriteTime" : 1513351913,
+    "last_content_update" : 1513360713560,
+    "path" : "C:/Users/Vincenzo/Desktop/FIB/BSG/SG/Lecture4/HW4/Homework4.R",
+    "project_path" : "Homework4.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
