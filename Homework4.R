@@ -53,3 +53,22 @@ listIds
 Ydf = as.data.frame(Y)
 drops <- c("rs5999890")
 Ynone = Ydf[ , !(names(Ydf) %in% drops)]
+Ynone = as.matrix(Ynone)
+snpsnone = ncol(Ynone)
+
+Genone = cbind(substr(Ynone[,1],1,1),substr(Ynone[,1],2,2))
+
+for (i in 2:(snpsnone)) {
+  Genone = cbind(Genone, substr(Ynone[,i],1,1) ,substr(Ynone[,i],2,2))
+}
+Snpnamesnone <- paste("SNP",1:snpsnone,sep="")
+Snpnamesnone
+HaploResnone <- haplo.em(Genone,locus.label=Snpnamesnone,control=haplo.em.control(min.posterior=1e-3))
+HaploResnone
+
+HaploResnone$hap.prob
+nHaplonone = nrow(HaploResnone$haplotype)
+haploListnone = HaploResnone$haplotype
+indexMaxnone = which(HaploResnone$hap.prob == max(HaploResnone$hap.prob))
+mostCommonHaplotypenone = HaploResnone$haplotype[indexMaxnone,]
+
