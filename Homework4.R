@@ -54,7 +54,7 @@ mostlikely = t(cbind(HaploRes$hap1code[listIds], HaploRes$hap2code[listIds]))
 mostlikely[1,]=paste0(mostlikely[,1],"/",mostlikely[,2])
 mostlikely = as.data.frame(t(mostlikely[1,]))
 colnames(mostlikely)=listIds
-xtable(mostlikely)
+xtable(mostlikely[,1:18])
 
 #6
 Ydf = as.data.frame(Y)
@@ -78,4 +78,21 @@ nHaplonone = nrow(HaploResnone$haplotype)
 haploListnone = HaploResnone$haplotype
 indexMaxnone = which(HaploResnone$hap.prob == max(HaploResnone$hap.prob))
 mostCommonHaplotypenone = HaploResnone$haplotype[indexMaxnone,]
+
+locus = function(x){
+  if (length(names(table(haploListnone[,x]))) > 1){
+    geno = paste0(names(table(haploListnone[,x]))[1],names(table(haploListnone[,x]))[2])
+  }
+  else{
+    geno = paste0(names(table(haploListnone[,x]))[1],names(table(haploListnone[,x]))[1])
+  }
+  return(geno)
+} 
+
+new_locus = sapply(1:ncol(haploListnone), locus)
+unique(new_locus)
+
+
+
+
 
