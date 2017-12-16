@@ -49,6 +49,13 @@ for(i in 1:nrow(Y)) {
 }
 listIds
 
+
+mostlikely = t(cbind(HaploRes$hap1code[listIds], HaploRes$hap2code[listIds]))
+mostlikely[1,]=paste0(mostlikely[,1],"/",mostlikely[,2])
+mostlikely = as.data.frame(t(mostlikely[1,]))
+colnames(mostlikely)=listIds
+xtable(mostlikely)
+
 #6
 Ydf = as.data.frame(Y)
 drops <- c("rs5999890")

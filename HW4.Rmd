@@ -156,7 +156,19 @@ mostCommonHaplotype = HaploRes$haplotype[indexMax,]
     }
     listIds
     ```
-
+    
+    
+    
+    \begin{table}[ht]
+    \centering
+    \begin{tabular}{rllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll}
+      \hline
+     & 1 & 2 & 4 & 5 & 8 & 10 & 11 & 12 & 13 & 15 & 16 & 20 & 22 & 23 & 35 & 37 & 40 & 42 & 43 & 44 & 46 & 49 & 50 & 51 & 52 & 53 & 54 & 56 & 57 & 61 & 64 & 74 & 75 & 76 & 81 & 83 & 84 & 85 & 88 & 89 & 92 & 93 & 97 & 100 & 101 & 102 & 104 & 111 & 114 & 115 & 118 & 119 & 121 & 126 & 127 & 129 & 130 & 131 & 133 & 134 & 135 & 137 \\ 
+      \hline
+    1 & 6/5 & 5/6 & 6/5 & 5/6 & 6/5 & 5/6 & 6/5 & 5/6 & 6/5 & 5/6 & 6/5 & 5/6 & 6/5 & 5/6 & 6/5 & 5/6 & 6/5 & 5/6 & 6/5 & 5/6 & 6/5 & 5/6 & 6/5 & 5/6 & 6/5 & 5/6 & 6/5 & 5/6 & 6/5 & 5/6 & 6/5 & 5/6 & 6/5 & 5/6 & 6/5 & 5/6 & 6/5 & 5/6 & 6/5 & 5/6 & 6/5 & 5/6 & 6/5 & 5/6 & 6/5 & 5/6 & 6/5 & 5/6 & 6/5 & 5/6 & 6/5 & 5/6 & 6/5 & 5/6 & 6/5 & 5/6 & 6/5 & 5/6 & 6/5 & 5/6 & 6/5 & 5/6 \\ 
+       \hline
+    \end{tabular}
+    \end{table}
 6. Sembra che i risultati non cambiano però il bisognerebe sapere il perchè...
     + List:
         
