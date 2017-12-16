@@ -1,0 +1,214 @@
+---
+title: "Homework 4"
+author: "Lorenzo Galizia, Vincenzo Genna"
+date: "16/12/2017"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r echo=FALSE, warning=FALSE, eval=TRUE, results='hide'}
+library(xtable)
+library(haplo.stats)
+```
+
+```{r, echo=FALSE, include=FALSE}
+load("MB.rda")
+
+#2
+indiv = nrow(Y)
+snps = ncol(Y)
+perc = (100 * length(which(is.na(Y))))/length(Y)
+
+tab = data.frame(indiv, snps, perc)
+
+#3
+nPossibleHaplotypes = 2 ^ snps
+
+#4
+Geno = cbind(substr(Y[,1],1,1),substr(Y[,1],2,2))
+
+for (i in 2:snps) {
+  Geno = cbind(Geno, substr(Y[,i],1,1) ,substr(Y[,i],2,2))
+}
+
+Snpnames <- paste("SNP",1:snps,sep="")
+
+HaploRes <- haplo.em(Geno,locus.label=Snpnames,control=haplo.em.control(min.posterior=1e-3))
+
+
+nHaplo = nrow(HaploRes$haplotype)
+haploList = HaploRes$haplotype
+indexMax = which(HaploRes$hap.prob == max(HaploRes$hap.prob))
+mostCommonHaplotype = HaploRes$haplotype[indexMax,]
+```
+
+
+2. Data set information:  
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrr}
+  \hline
+ & Individuals & SNPs & Missing data(\%)\\ 
+  \hline
+ & 139 &  28 & 39.54 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+3. $2^{nSNP}$ ($=268435456$) haplotypes can theoretically be found if all the genotypes are different.  
+
+4. 6 haplotypes were found using the EM algorithm:  
+    + List:
+        
+        \begin{tabular}{rllllllllll}
+          \hline
+         & SNP1 & SNP2 & SNP3 & SNP4 & SNP5 & SNP6 & SNP7 & SNP8 & SNP9 & SNP10 \\ 
+          \hline
+        1 & C & A & A & C & C & A & G & T & A & G \\ 
+          2 & T & A & A & C & C & A & G & C & G & G \\ 
+          3 & T & A & A & C & C & A & G & C & G & G \\ 
+          4 & T & A & A & C & C & A & G & T & A & G \\ 
+          5 & T & A & G & G & C & A & G & T & A & G \\ 
+          6 & T & C & A & C & C & A & C & T & A & A \\ 
+           \hline
+        \end{tabular}
+        
+        \begin{tabular}{rlllllllll}
+          \hline
+         & SNP11 & SNP12 & SNP13 & SNP14 & SNP15 & SNP16 & SNP17 & SNP18 & SNP19 \\ 
+          \hline
+        1 & C & G & C & C & A & A & C & C & C \\ 
+          2 & C & A & A & T & G & G & T & C & T \\ 
+          3 & C & A & A & T & G & G & T & C & T \\ 
+          4 & C & A & A & T & G & A & C & C & T \\ 
+          5 & C & G & C & C & A & A & C & C & C \\ 
+          6 & T & G & C & C & A & A & C & A & C \\ 
+           \hline
+        \end{tabular}
+        
+        
+        \begin{tabular}{rlllllllll}
+          \hline
+         & SNP20 & SNP21 & SNP22 & SNP23 & SNP24 & SNP25 & SNP26 & SNP27 & SNP28 \\ 
+          \hline
+        1 & C & G & C & C & C & C & A & C & T \\ 
+          2 & C & A & T & T & C & C & A & C & T \\ 
+          3 & C & G & C & T & C & C & A & C & T \\ 
+          4 & C & G & C & T & C & C & A & C & T \\ 
+          5 & C & G & C & C & C & C & A & C & T \\ 
+          6 & G & G & C & C & C & C & A & C & T \\ 
+           \hline
+        \end{tabular}
+        
+    + Most common haplotype:  
+    
+            
+        \begin{tabular}{rllllllllll}
+          \hline
+         & SNP1 & SNP2 & SNP3 & SNP4 & SNP5 & SNP6 & SNP7 & SNP8 & SNP9 & SNP10 \\ 
+          \hline
+        6 & T & C & A & C & C & A & C & T & A & A \\ 
+           \hline
+        \end{tabular}
+        
+        
+        \begin{tabular}{rlllllllll}
+          \hline
+         & SNP11 & SNP12 & SNP13 & SNP14 & SNP15 & SNP16 & SNP17 & SNP18 & SNP19 \\ 
+          \hline
+        6 & T & G & C & C & A & A & C & A & C \\ 
+           \hline
+        \end{tabular}
+        
+        
+        \begin{tabular}{rlllllllll}
+          \hline
+         & SNP20 & SNP21 & SNP22 & SNP23 & SNP24 & SNP25 & SNP26 & SNP27 & SNP28 \\ 
+          \hline
+        6 & G & G & C & C & C & C & A & C & T \\ 
+           \hline
+        \end{tabular}  
+
+\newpage    
+5. The haplotypic constitution is ambiguous for the individuals in the listIDs: 
+    ```{r, echo=FALSE, include=TRUE}
+    #5
+    #names(table(Y[4,]))[2]
+    #substr(names(table(Y[4,]))[2],1,1) != substr(names(table(Y[4,]))[2],2,2)
+    
+    listIds=c()
+    for(i in 1:nrow(Y)) {
+      cont=0
+      for(j in 1:length(table(Y[i,]))) {
+        if(substr(names(table(Y[i,]))[j],1,1) != substr(names(table(Y[i,]))[j],2,2)) {
+          cont=cont+table(Y[i,])[names(table(Y[i,]))[j]]
+        }
+      }
+      if(cont>1) {
+        listIds[length(listIds)+1]=i;
+      }
+    }
+    listIds
+    ```
+
+6. Sembra che i risultati non cambiano però il bisognerebe sapere il perchè...
+    + List:
+        
+        \begin{tabular}{rllllllllll}
+          \hline
+         & SNP1 & SNP2 & SNP3 & SNP4 & SNP5 & SNP6 & SNP7 & SNP8 & SNP9 & SNP10 \\ 
+          \hline
+        1 & C & A & A & C & A & G & T & A & G & C \\ 
+          2 & T & A & A & C & A & G & C & G & G & C \\ 
+          3 & T & A & A & C & A & G & C & G & G & C \\ 
+          4 & T & A & A & C & A & G & T & A & G & C \\ 
+          5 & T & A & G & G & A & G & T & A & G & C \\ 
+          6 & T & C & A & C & A & C & T & A & A & T \\ 
+           \hline
+        \end{tabular}
+        
+        \begin{tabular}{rlllllllll}
+          \hline
+         & SNP11 & SNP12 & SNP13 & SNP14 & SNP15 & SNP16 & SNP17 & SNP18 & SNP19 \\ 
+          \hline
+        1 & G & C & C & A & A & C & C & C & C \\ 
+          2 & A & A & T & G & G & T & C & T & C \\ 
+          3 & A & A & T & G & G & T & C & T & C \\ 
+          4 & A & A & T & G & A & C & C & T & C \\ 
+          5 & G & C & C & A & A & C & C & C & C \\ 
+          6 & G & C & C & A & A & C & A & C & G \\ 
+           \hline
+        \end{tabular}
+        
+        
+        \begin{tabular}{rllllllll}
+          \hline
+         & SNP20 & SNP21 & SNP22 & SNP23 & SNP24 & SNP25 & SNP26 & SNP27 \\ 
+          \hline
+        1 & G & C & C & C & C & A & C & T \\ 
+          2 & A & T & T & C & C & A & C & T \\ 
+          3 & G & C & T & C & C & A & C & T \\ 
+          4 & G & C & T & C & C & A & C & T \\ 
+          5 & G & C & C & C & C & A & C & T \\ 
+          6 & G & C & C & C & C & A & C & T \\ 
+           \hline
+        \end{tabular}
+        
+    + Haplotype frequencies:  
+    
+        \begin{table}[ht]
+        \centering
+        \begin{tabular}{rrrrrrr}
+          \hline
+         & 1 & 2 & 3 & 4 & 5 & 6 \\ 
+          \hline
+        freq & 0.02 & 0.06 & 0.02 & 0.00 & 0.18 & 0.73 \\ 
+           \hline
+        \end{tabular}
+        \end{table}

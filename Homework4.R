@@ -1,4 +1,5 @@
 library(haplo.stats)
+library(xtable)
 
 load("MB.rda")
 
@@ -6,6 +7,8 @@ load("MB.rda")
 indiv = nrow(Y)
 snps = ncol(Y)
 perc = (100 * length(which(is.na(Y))))/length(Y)
+
+tab = data.frame(indiv, snps, perc)
 
 #3
 nPossibleHaplotypes = 2 ^ snps
@@ -26,7 +29,7 @@ nHaplo = nrow(HaploRes$haplotype)
 haploList = HaploRes$haplotype
 indexMax = which(HaploRes$hap.prob == max(HaploRes$hap.prob))
 mostCommonHaplotype = HaploRes$haplotype[indexMax,]
-
+xtable(haploList[,20:28])
 
 #5
 names(table(Y[4,]))[2]
@@ -45,3 +48,8 @@ for(i in 1:nrow(Y)) {
   }
 }
 listIds
+
+#6
+Ydf = as.data.frame(Y)
+drops <- c("rs5999890")
+Ynone = Ydf[ , !(names(Ydf) %in% drops)]
