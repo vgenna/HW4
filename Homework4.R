@@ -93,6 +93,88 @@ new_locus = sapply(1:ncol(haploListnone), locus)
 unique(new_locus)
 
 
+#8
+
+maf = function(data){
+  freqA = (data$AA * 2 + data$AB)/((data$AA + data$AB + data$BB)*2)
+  freqB = (data$BB * 2 + data$AB)/((data$AA + data$AB + data$BB)*2)
+  out = pmin(freqA, freqB)
+  return(out)
+}
+
+mat = matrix(nrow = ncol(Y), ncol = 3)
+alleles = matrix(nrow = ncol(Y), ncol = 3)
+for(i in 1:ncol(Y)) {
+  if(length(names(table(Y[,i])))==1) {
+    line = c(table(Y[,i])[1], 0, 0)
+    lineAL=c("x","x",names(table(Y[,i]))[1])
+  } 
+  else if (length(names(table(Y[,i])))==2) {
+    if(substr(names(table(Y[,i]))[2],1,1) != substr(names(table(Y[,i]))[2],2,2)) {
+      line = c(table(Y[,i])[1], table(Y[,i])[2], 0)
+      lineAL=c("x",names(table(Y[,i]))[2],names(table(Y[,i]))[1])
+    } else if(substr(names(table(Y[,i]))[1],1,1) != substr(names(table(Y[,i]))[1],2,2)) {
+        line = c(0,table(Y[,i])[1] , table(Y[,i])[2])
+        lineAL=c("x",names(table(Y[,i]))[1],names(table(Y[,i]))[2])
+      } 
+      else {
+          line = c(table(Y[,i])[1], 0, table(Y[,i])[2])
+          lineAL=c(names(table(Y[,i]))[1],"x",names(table(Y[,i]))[2])
+      }
+    }
+  else if (length(names(table(Y[,i])))==3) {
+    line = c(table(Y[,i])[1], table(Y[,i])[2], table(Y[,i])[3])
+    lineAL=c(names(table(Y[,i]))[1],names(table(Y[,i]))[2],names(table(Y[,i]))[3])
+  }
+  mat[i,]=line 
+  alleles[i,]=lineAL
+}
+
+mat = as.data.frame(mat)
+alleles = as.data.frame(alleles)
+colnames(mat) = c("AA", "AB", "BB")
+
+MAF = maf(mat)
+
+p = MAF[1]
+q=1-p
+simulatedCounts = rmultinom(1,139, c(p^2,2*p*q,q^2))
+
+for(i in 2:length(MAF)){
+  p = MAF[i]
+  q=1-p
+  simulatedCounts = cbind(simulatedCounts, rmultinom(1,139, c(p^2,2*p*q,q^2)) )
+}
+
+simulatedCounts = as.data.frame(t(simulatedCounts))
+
+alleleMat=as.data.frame(matrix(nrow = 139, ncol = 28))
+for(i in 1:nrow(simulatedCounts)) {
+  line = c(as.character(rep(alleles[i,1], simulatedCounts[i,1])), as.character(rep(alleles[i,2], simulatedCounts[i,2])), as.character(rep(alleles[i,3], simulatedCounts[i,3])))
+  alleleMat[,i]=line
+}
+
+alleleMat[1,13]="AA"
+alleleMat[1:2,14]="CC"
+alleleMat[1:3,15]="AA"
+alleleMat[1:2,19]="CC"
+alleleMat[1,23]="CC"
+
+Geno8 = cbind(substr(alleleMat[,1],1,1),substr(alleleMat[,1],2,2))
+
+for (i in 2:snps) {
+  Geno8 = cbind(Geno8, substr(alleleMat[,i],1,1) ,substr(alleleMat[,i],2,2))
+}
+
+Snpnames8 <- paste("SNP",1:snps,sep="")
+Snpnames8
+HaploRes8 <- haplo.em(Geno8,locus.label=Snpnames,control=haplo.em.control(min.posterior=1e-3))
+HaploRes8
+
+
+
+
+
 
 
 
