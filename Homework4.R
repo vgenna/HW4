@@ -67,7 +67,7 @@ mostlikely = t(cbind(HaploRes$hap1code[effectiveListID], HaploRes$hap2code[effec
 mostlikely=paste0(mostlikely[1,],"/",mostlikely[2,])
 mostlikely = as.data.frame(t(mostlikely))
 colnames(mostlikely)=listIds
-xtable(mostlikely[,1:18])
+xtable(mostlikely[,37:54])
 
 #6
 Ydf = as.data.frame(Y)

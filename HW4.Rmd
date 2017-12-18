@@ -136,7 +136,7 @@ mostCommonHaplotype = HaploRes$haplotype[indexMax,]
         \end{tabular}  
 
 \newpage    
-5. The haplotypic constitution is ambiguous for the individuals in the listIDs: 
+5. The haplotypic constitution is ambiguous (neither homozygotes or single-site heterozygotes) for the individuals in the listIDs: 
     ```{r, echo=FALSE, include=TRUE}
     #5
     #names(table(Y[4,]))[2]
@@ -163,7 +163,7 @@ mostCommonHaplotype = HaploRes$haplotype[indexMax,]
       \hline
      & 1 & 2 & 4 & 5 & 8 & 10 & 11 & 12 & 13 & 15 & 16 & 20 & 22 & 23 & 35 & 37 & 40 & 42 \\ 
       \hline
-    1 & 6/6 & 5/5 & 6/6 & 5/5 & 6/6 & 5/5 & 6/6 & 5/5 & 6/6 & 5/5 & 6/6 & 5/5 & 6/6 & 5/5 & 6/6 & 5/5 & 6/6 & 5/5 \\ 
+    1 & 5/6 & 6/5 & 6/5 & 5/6 & 6/2 & 6/5 & 6/5 & 6/5 & 5/2 & 5/6 & 5/6 & 5/6 & 2/6 & 5/6 & 5/6 & 5/6 & 6/1 & 6/2 \\ 
        \hline
     \end{tabular}
     
@@ -171,7 +171,7 @@ mostCommonHaplotype = HaploRes$haplotype[indexMax,]
       \hline
      & 43 & 44 & 46 & 49 & 50 & 51 & 52 & 53 & 54 & 56 & 57 & 61 & 64 & 74 & 75 & 76 & 81 & 83 \\ 
       \hline
-    1 & 6/6 & 5/5 & 6/6 & 5/5 & 6/6 & 5/5 & 6/6 & 5/5 & 6/6 & 5/5 & 6/6 & 5/5 & 6/6 & 5/5 & 6/6 & 5/5 & 6/6 & 5/5 \\ 
+    1 & 6/5 & 6/2 & 6/5 & 6/5 & 5/6 & 6/3 & 2/6 & 5/6 & 6/5 & 6/2 & 5/2 & 6/5 & 6/5 & 6/1 & 5/3 & 5/6 & 5/6 & 5/2 \\ 
        \hline
     \end{tabular}   
     
@@ -179,7 +179,7 @@ mostCommonHaplotype = HaploRes$haplotype[indexMax,]
       \hline
      & 84 & 85 & 88 & 89 & 92 & 93 & 97 & 100 & 101 & 102 & 104 & 111 & 114 & 115 & 118 & 119 & 121 & 126 \\ 
       \hline
-    1 & 6/6 & 5/5 & 6/6 & 5/5 & 6/6 & 5/5 & 6/6 & 5/5 & 6/6 & 5/5 & 6/6 & 5/5 & 6/6 & 5/5 & 6/6 & 5/5 & 6/6 & 5/5 \\ 
+    1 & 5/6 & 1/6 & 2/6 & 5/6 & 5/6 & 5/6 & 6/5 & 6/5 & 1/6 & 6/5 & 6/2 & 6/5 & 6/5 & 6/3 & 6/4 & 5/3 & 5/2 & 5/6 \\ 
        \hline
     \end{tabular}
     
@@ -187,11 +187,11 @@ mostCommonHaplotype = HaploRes$haplotype[indexMax,]
       \hline
      & 127 & 129 & 130 & 131 & 133 & 134 & 135 & 137 \\ 
       \hline
-    1 & 6/6 & 5/5 & 6/6 & 5/5 & 6/6 & 5/5 & 6/6 & 5/5 \\ 
+    1 & 6/5 & 6/5 & 6/2 & 2/6 & 5/6 & 5/6 & 6/5 & 5/6 \\ 
        \hline
     \end{tabular}
     
-    We noted that the posterior probabilities of pairs of haplotypes (HaploRes$post) for each individual was always 100%, except for the individual 22, which had three possible haplotypic constitutions (4.9% for 4/6, 20% for 3/6, 74.99% for 6/2).
+    We noted that the posterior probabilities of pairs of haplotypes (HaploRes$post) for each individual was always 100%, except for the individual 22, which had three possible haplotypic constitutions (4.9% for 4/6, 20% for 6/3, 74.99% for 2/6).
 
 
 6. From our results it is possible to see that nothing changed. Indeed we are removing an SNP (\textit{rs5999890}) that, for each individual, has the same genotype ("\textit{CC}"). So all the individuals are subject to the exact same vaariation and this does not change the results and in particular the haplotype frequencies:  
@@ -236,9 +236,9 @@ mostCommonHaplotype = HaploRes$haplotype[indexMax,]
           6 & G & C & C & C & C & A & C & T \\ 
            \hline
         \end{tabular}
+    \newpage    
+    + \underline{Haplotype frequencies}:  
         
-  + \underline{Haplotype frequencies}:  
-    
         \begin{table}[ht]
         \centering
         \begin{tabular}{rrrrrrr}
