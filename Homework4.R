@@ -23,6 +23,8 @@ for (i in 2:snps) {
 Snpnames <- paste("SNP",1:snps,sep="")
 Snpnames
 HaploRes <- haplo.em(Geno,locus.label=Snpnames,control=haplo.em.control(min.posterior=1e-3))
+length(HaploRes$hap1code)
+length(HaploRes$hap2code)
 HaploRes
 
 nHaplo = nrow(HaploRes$haplotype)
@@ -48,11 +50,22 @@ for(i in 1:nrow(Y)) {
   }
 }
 listIds
+which(listIds==20)
+
+effectiveListID = c()
+for(i in 1:length(listIds)) {
+  if(i>which(listIds==20)) {
+    effectiveListID[i]=listIds[i]+2
+  }
+  else {
+    effectiveListID[i]=listIds[i]
+  }
+}
 
 
-mostlikely = t(cbind(HaploRes$hap1code[listIds], HaploRes$hap2code[listIds]))
-mostlikely[1,]=paste0(mostlikely[,1],"/",mostlikely[,2])
-mostlikely = as.data.frame(t(mostlikely[1,]))
+mostlikely = t(cbind(HaploRes$hap1code[effectiveListID], HaploRes$hap2code[effectiveListID]))
+mostlikely=paste0(mostlikely[1,],"/",mostlikely[2,])
+mostlikely = as.data.frame(t(mostlikely))
 colnames(mostlikely)=listIds
 xtable(mostlikely[,1:18])
 
@@ -92,6 +105,26 @@ locus = function(x){
 new_locus = sapply(1:ncol(haploListnone), locus)
 unique(new_locus)
 
+#7
+mostlikelyAll = t(cbind(HaploRes$hap1code, HaploRes$hap2code))
+mostlikelyAll=paste0(mostlikelyAll[1,],"/",mostlikelyAll[2,])
+mostlikelyAll = mostlikelyAll[-22]
+mostlikelyAll = mostlikelyAll[-22]
+mostlikelyAll = (t(mostlikelyAll))
+
+newLocusAlleles = c()
+
+for(i in 1:nrow(Y)) {
+  first = as.numeric(substr(mostlikelyAll[i],1,1))
+  second = as.numeric(substr(mostlikelyAll[i],3,3))
+  firstHap = HaploRes$haplotype[first, ]
+  secondHap = HaploRes$haplotype[second, ]
+  indivMostProb = paste0(firstHap,secondHap)
+  newLocusAlleles[i]=names(sort(table(indivMostProb),decreasing=TRUE))[1]
+}
+
+mostLikelyGen = names(sort(table(newLocusAlleles),decreasing=TRUE))[1]
+mostLikelyGen_prob = 100*sort(table(newLocusAlleles),decreasing=TRUE)[1]/sum(table(newLocusAlleles))
 
 #8
 
@@ -159,6 +192,8 @@ alleleMat[1:2,14]="CC"
 alleleMat[1:3,15]="AA"
 alleleMat[1:2,19]="CC"
 alleleMat[1,23]="CC"
+
+alleleMat = alleleMat[sample(1:nrow(alleleMat), replace = FALSE),]
 
 Geno8 = cbind(substr(alleleMat[,1],1,1),substr(alleleMat[,1],2,2))
 
